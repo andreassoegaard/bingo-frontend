@@ -18,6 +18,16 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "middleware.js",
+    "middleware.js",
+    "lib/supabase-browser.js",
+    "lib/supabase-browser.js",
+    "lib/supabase-server.js",
+    "lib/supabase-server.js"
+  ],
   "exclude": ["node_modules"]
 }

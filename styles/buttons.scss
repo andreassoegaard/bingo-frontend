@@ -1,0 +1,29 @@
+.bi-button {
+  @apply relative disabled:opacity-50 flex justify-center rounded-md py-2 px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2;
+
+  &--style-black {
+    @apply bg-black border border-transparent text-white hover:bg-gray-900 focus:ring-black;
+  }
+  &--style-red {
+    @apply bg-red-700 border border-transparent text-white hover:bg-red-900 focus:ring-black;
+  }
+  &--style-indigo {
+    @apply bg-indigo-600 border border-transparent text-white hover:bg-indigo-800 focus:ring-indigo-600;
+  }
+  &--style-white-red {
+    @apply bg-white border border-red-400 text-red-600 hover:bg-red-50 focus:ring-red-600;
+  }
+  &--style-white {
+    @apply bg-white border border-gray-200 text-black hover:bg-gray-100 focus:ring-black;
+  }
+
+  // Error
+  &--error {
+    @apply bg-red-600 border border-transparent ring-2 ring-offset-2 ring-red-600 focus:ring-red-600 hover:bg-red-700;
+  }
+
+  // Success {
+  &--success {
+    @apply bg-green-600 border border-transparent ring-2 ring-offset-2 ring-green-600 focus:ring-green-600 hover:bg-green-700;
+  }
+}
