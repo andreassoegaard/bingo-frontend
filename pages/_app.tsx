@@ -1,5 +1,8 @@
 import "@/styles/globals.scss";
 import "@/styles/buttons.scss";
+import "@/styles/badges.scss";
+import "@/styles/placeholder.scss";
+import "@/styles/wrappers.scss";
 import type { AppProps } from "next/app";
 import supabaseClient from "@/lib/supabase-browser";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";

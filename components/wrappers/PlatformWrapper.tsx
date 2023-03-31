@@ -1,5 +1,10 @@
-import { PropsWithChildren } from "react";
-import { Fragment, useState, useMemo, useEffect } from "react";
+import {
+  PropsWithChildren,
+  Fragment,
+  useState,
+  useMemo,
+  useEffect,
+} from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -8,24 +13,36 @@ import {
   XMarkIcon,
   UsersIcon,
   PlayCircleIcon,
+  BanknotesIcon,
+  ChartPieIcon,
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { selectOrgName } from "@/store/orgSlice";
 import { useSelector } from "react-redux";
 import supabase from "@/lib/supabase-browser";
-
-interface Props {
-  title?: string;
-}
+import { useIsAdmin } from "@/hooks/isAdmin";
 
 const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(" ");
 };
 
+interface Props {
+  wrapperSize?: string;
+}
+
 export default function PlatformWrapper(props: PropsWithChildren<Props>) {
+  const isAdmin = useIsAdmin();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const orgName = useSelector(selectOrgName);
+
+  const wrapperSize = useMemo(() => {
+    if (props.wrapperSize) {
+      return `bi-wrapper-size--${props.wrapperSize}`;
+    } else {
+      return "";
+    }
+  }, [props.wrapperSize]);
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -60,6 +77,12 @@ export default function PlatformWrapper(props: PropsWithChildren<Props>) {
         href: "/platform",
         icon: HomeIcon,
         current: router.route === "/platform",
+      },
+      {
+        name: "Statistik",
+        href: "/platform/statistics",
+        icon: ChartPieIcon,
+        current: router.route === "/platform/statistics",
       },
       {
         name: "Bankospil",
@@ -206,17 +229,19 @@ export default function PlatformWrapper(props: PropsWithChildren<Props>) {
         {/* Static sidebar for desktop */}
         <div className='hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col'>
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className='flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6'>
-            <div className='flex h-16 shrink-0 items-center'>
-              <img
-                className='h-8 w-auto'
-                src='https://tailwindui.com/img/logos/mark.svg?color=white'
-                alt='Your Company'
-              />
-              <div className='pl-4 text-white font-medium text-sm'>
-                {orgName}
+          <div className='flex grow flex-col overflow-y-auto bg-indigo-600 px-6'>
+            <div className='mt-5 mb-6'>
+              <div className='text-white text-sm font-semibold flex items-center'>
+                <BanknotesIcon className='h-10 w-10 mr-3 pt-1 mt-0.5' />
+                <div className='leading-5 pt-2'>
+                  <div>BingoBuddy</div>
+                  <div className='text-xs font-semibold text-indigo-200'>
+                    {orgName}
+                  </div>
+                </div>
               </div>
             </div>
+
             <nav className='flex flex-1 flex-col'>
               <ul role='list' className='flex flex-1 flex-col'>
                 <li>
@@ -279,9 +304,14 @@ export default function PlatformWrapper(props: PropsWithChildren<Props>) {
                   </ul>
                 </li>
                 <li className='-mx-6'>
-                  <a
-                    href='#'
-                    className='flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-indigo-700'
+                  <Link
+                    href='/platform/user'
+                    className={classNames(
+                      router.route.includes("/platform/user")
+                        ? "bg-indigo-700"
+                        : "",
+                      "flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-indigo-700"
+                    )}
                   >
                     <img
                       className='h-8 w-8 rounded-full bg-indigo-700'
@@ -290,7 +320,7 @@ export default function PlatformWrapper(props: PropsWithChildren<Props>) {
                     />
                     <span className='sr-only'>Your profile</span>
                     <span aria-hidden='true'>Tom Cook</span>
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>
@@ -320,13 +350,8 @@ export default function PlatformWrapper(props: PropsWithChildren<Props>) {
         </div>
 
         <main className='lg:pl-72'>
-          {props.title && (
-            <div className='px-4 sm:px-6 lg:px-8 py-4 text-lg font-medium bg-white shadow-sm'>
-              {props.title}
-            </div>
-          )}
-          <div>
-            <div className='px-4 sm:px-6 lg:px-8 mt-4'>{props.children}</div>
+          <div className={wrapperSize}>
+            <div className='px-12 mt-8'>{props.children}</div>
           </div>
         </main>
       </div>

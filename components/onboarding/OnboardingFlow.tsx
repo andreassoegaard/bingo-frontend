@@ -24,6 +24,7 @@ export default function OnboardingFlow() {
             password: password,
             options: {
               data: {
+                name: "",
                 organizations: [data[0].id.toString()],
               },
             },

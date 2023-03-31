@@ -10,11 +10,13 @@ import type { RowInput, CellInput, CellDef } from "jspdf-autotable";
 import Button from "@/components/ui/Button";
 import { selectOrgState, selectOrgName, setOrgState } from "@/store/orgSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useIsAdmin } from "@/hooks/isAdmin";
 
 export default function Home() {
   const orgName = useSelector(selectOrgName);
   const orgState = useSelector(selectOrgState);
   const dispatch = useDispatch();
+  const isAdmin = useIsAdmin();
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -161,15 +163,11 @@ export default function Home() {
     }
     doc.save("SRA3 - bankoplader.pdf");
   };
-
-  const changeState = () => {
-    dispatch(setOrgState(orgState + 1));
-  };
   return (
     <>
       <PageWrapper title='Forside'>
         <PlatformWrapper title='Forside'>
-          {orgName}
+          {/* {orgName}
           {orgState}
           <Button onClick={changeState} style='indigo'>
             Change state
@@ -177,7 +175,8 @@ export default function Home() {
           Youre in! <LogOutButton />
           <Button onClick={downloadPdf} style='indigo'>
             Download PDF
-          </Button>
+          </Button> */}
+          <LogOutButton />
           {plates.map((plateOfSix, index) => {
             return (
               <div key={index} className='border-b border-gray-300 mb-3 pb-3'>
