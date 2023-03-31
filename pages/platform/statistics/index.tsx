@@ -2,11 +2,11 @@ import PageWrapper from "@/components/wrappers/PageWrapper";
 import PlatformWrapper from "@/components/wrappers/PlatformWrapper";
 import PageTitle from "@/components/ui/PageTitle";
 
-export default function GeneralSettingsPage() {
+export default function StatisticsPage() {
   return (
-    <PageWrapper title='Spil banko'>
+    <PageWrapper title='Statistik'>
       <PlatformWrapper>
-        <PageTitle>Spil banko</PageTitle>
+        <PageTitle>Statistik</PageTitle>
       </PlatformWrapper>
     </PageWrapper>
   );
