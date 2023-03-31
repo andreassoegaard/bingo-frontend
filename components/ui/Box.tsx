@@ -10,7 +10,7 @@ export default function Box(props: PropsWithChildren<Props>) {
       {props.title && (
         <div className='px-5 py-4 font-medium'>{props.title}</div>
       )}
-      <div className='px-5 py-4'>{props.children}</div>
+      <div className='px-5 pb-4 pt-1'>{props.children}</div>
     </div>
   );
 }

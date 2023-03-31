@@ -4,7 +4,6 @@
 
 .bs-board {
   padding: 0;
-  max-width: 500px;
   background-color: white;
 }
 .bs-board--red {
@@ -28,7 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 50px;
+  height: 60px;
   border-top: 2px solid #000;
   border-left: 2px solid #000;
   font-size: 16px;
