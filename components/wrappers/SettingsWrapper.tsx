@@ -1,27 +1,33 @@
 import { PropsWithChildren } from "react";
 import { useRouter } from "next/router";
+import { useSlug } from "@/hooks/useSlug";
 import Link from "next/link";
 
 export default function SettingsWrapper(props: PropsWithChildren) {
   const router = useRouter();
+  const slug = useSlug(router.asPath);
   const navigation = [
     {
       name: "Generelt",
-      href: "/platform/control-panel/settings/general",
-      current: router.route === "/platform/control-panel/settings/general",
+      href: `/platform/${slug}/control-panel/settings/general`,
+      current:
+        router.asPath === `/platform/${slug}/control-panel/settings/general`,
     },
   ];
 
   const bankoNavigation = [
     {
       name: "Standardopsætning",
-      href: "/platform/control-panel/settings/bankosetup",
-      current: router.route === "/platform/control-panel/settings/bankosetup",
+      href: `/platform/${slug}/control-panel/settings/bankosetup`,
+      current:
+        router.asPath === `/platform/${slug}/control-panel/settings/bankosetup`,
     },
     {
       name: "Bankoplader",
-      href: "/platform/control-panel/settings/bankoplates",
-      current: router.route === "/platform/control-panel/settings/bankoplates",
+      href: `/platform/${slug}/control-panel/settings/bankoplates`,
+      current:
+        router.asPath ===
+        `/platform/${slug}/control-panel/settings/bankoplates`,
     },
   ];
 

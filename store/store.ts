@@ -1,5 +1,6 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import { orgSlice } from "./orgSlice";
+import { userSlice } from "./userSlice";
 import { createWrapper } from "next-redux-wrapper";
 import { persistReducer, persistStore } from "redux-persist";
 import { combineReducers } from "@reduxjs/toolkit";
@@ -7,6 +8,7 @@ import storage from "redux-persist/lib/storage";
 
 const rootReducer = combineReducers({
   [orgSlice.name]: orgSlice.reducer,
+  [userSlice.name]: userSlice.reducer,
 });
 
 const makeConfiguredStore = () =>
@@ -23,7 +25,7 @@ export const makeStore = () => {
     // we need it only on client side
     const persistConfig = {
       key: "nextjs",
-      whitelist: ["org"], // make sure it does not clash with server keys
+      whitelist: ["org", "user"], // make sure it does not clash with server keys
       storage,
     };
     const persistedReducer = persistReducer(persistConfig, rootReducer);

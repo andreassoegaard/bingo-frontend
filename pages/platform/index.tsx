@@ -1,48 +1,26 @@
-import { useEffect, useState } from "react";
-import supabase from "@/lib/supabase-browser";
-import LogOutButton from "@/components/auth/LogOutButton";
-import PlatformWrapper from "@/components/wrappers/PlatformWrapper";
-import groupBy from "lodash.groupby";
-import PageWrapper from "@/components/wrappers/PageWrapper";
-import Button from "@/components/ui/Button";
-import { selectOrgState, selectOrgName, setOrgState } from "@/store/orgSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { useIsAdmin } from "@/hooks/isAdmin";
-import PageTitle from "@/components/ui/PageTitle";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { useSlug } from "@/hooks/useSlug";
 
-export default function Home() {
-  const orgName = useSelector(selectOrgName);
-  const orgState = useSelector(selectOrgState);
-  const dispatch = useDispatch();
-  const isAdmin = useIsAdmin();
+export default function PlatformIndex() {}
 
-  useEffect(() => {
-    const fetchSession = async () => {
-      const { data: sessionData } = await supabase.auth.getSession();
+export const getServerSideProps = async (ctx: any) => {
+  const supabase = createServerSupabaseClient(ctx);
+
+  let { data: organizations } = await supabase
+    .from("organizations")
+    .select("*");
+
+  if (organizations && organizations.length > 0) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: `/platform/${organizations[0].slug}`,
+      },
     };
-    fetchSession();
-  }, []);
-
-  const [plates, setPlates] = useState<any[]>([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase.from("banko_plates").select();
-      setPlates(
-        Object.entries(groupBy(data, "group_key")).map(
-          (item: any) => (item = item[1])
-        )
-      );
+  } else {
+    await supabase.auth.signOut();
+    return {
+      props: {},
     };
-    fetchData();
-  }, []);
-  return (
-    <>
-      <PageWrapper title='Forside'>
-        <PlatformWrapper>
-          <PageTitle>Forside</PageTitle>
-          <LogOutButton />
-        </PlatformWrapper>
-      </PageWrapper>
-    </>
-  );
-}
+  }
+};

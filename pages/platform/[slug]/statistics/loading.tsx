@@ -1,10 +1,12 @@
 import PageWrapper from "@/components/wrappers/PageWrapper";
 import PlatformWrapper from "@/components/wrappers/PlatformWrapper";
 
-export default function GeneralSettingsPage() {
+export default function Loading() {
   return (
-    <PageWrapper title='Rediger bruger'>
-      <PlatformWrapper title='Rediger bruger'></PlatformWrapper>
+    <PageWrapper title=''>
+      <PlatformWrapper>
+        <p>Loading</p>
+      </PlatformWrapper>
     </PageWrapper>
   );
 }
