@@ -18,10 +18,11 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { selectOrgName } from "@/store/orgSlice";
+import { selectOrgName, selectOrgState } from "@/store/orgSlice";
+import { selectUserData, selectIsAdmin } from "@/store/userSlice";
 import { useSelector } from "react-redux";
 import supabase from "@/lib/supabase-browser";
-import { useIsAdmin } from "@/hooks/isAdmin";
+import { useSlug } from "@/hooks/useSlug";
 
 const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(" ");
@@ -32,7 +33,18 @@ interface Props {
 }
 
 export default function PlatformWrapper(props: PropsWithChildren<Props>) {
-  const isAdmin = useIsAdmin();
+  const isAdmin = useSelector(selectIsAdmin);
+  const orgState = useSelector(selectOrgState);
+  const userData = useSelector(selectUserData);
+  useEffect(() => {
+    const checkOrgState = async () => {
+      if (!orgState || orgState === 0 || !userData.id) {
+        await supabase.auth.signOut();
+      }
+    };
+    checkOrgState();
+  }, []);
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const orgName = useSelector(selectOrgName);
 
@@ -53,45 +65,51 @@ export default function PlatformWrapper(props: PropsWithChildren<Props>) {
   }, []);
 
   const router = useRouter();
+  const slug = useSlug(router.asPath);
+
   const controlPanelItems = useMemo(() => {
     return [
       {
         name: "Brugere",
-        href: "/platform/control-panel/users",
+        href: `/platform/${slug}/control-panel/users`,
         icon: UsersIcon,
-        current: router.route.includes("/platform/control-panel/users"),
+        current: router.asPath.includes(
+          `/platform/${slug}/control-panel/users`
+        ),
       },
       {
         name: "Indstillinger",
-        href: "/platform/control-panel/settings/general",
-        current: router.route.includes("/platform/control-panel/settings/"),
+        href: `/platform/${slug}/control-panel/settings/general`,
+        current: router.asPath.includes(
+          `/platform/${slug}/control-panel/settings/`
+        ),
         icon: Cog6ToothIcon,
       },
     ];
-  }, [router.route]);
+  }, [router.asPath, slug]);
 
   const navigation = useMemo(() => {
     return [
       {
         name: "Forside",
-        href: "/platform",
+        href: `/platform/${slug}`,
         icon: HomeIcon,
-        current: router.route === "/platform",
+        current: router.asPath === `/platform/${slug}`,
       },
       {
         name: "Statistik",
-        href: "/platform/statistics",
+        href: `/platform/${slug}/statistics`,
         icon: ChartPieIcon,
-        current: router.route === "/platform/statistics",
+        current: router.asPath === `/platform/${slug}/statistics`,
       },
       {
         name: "Bankospil",
-        href: "/platform/play/banko",
+        href: `/platform/${slug}/play/banko`,
         icon: PlayCircleIcon,
-        current: router.route.includes("/platform/play/banko"),
+        current: router.asPath.includes(`/platform/${slug}/play/banko`),
       },
     ];
-  }, [router.route]);
+  }, [router.asPath, slug]);
 
   return (
     <>
@@ -319,7 +337,9 @@ export default function PlatformWrapper(props: PropsWithChildren<Props>) {
                       alt=''
                     />
                     <span className='sr-only'>Your profile</span>
-                    <span aria-hidden='true'>Tom Cook</span>
+                    {userData.name && (
+                      <span aria-hidden='true'>{userData.name}</span>
+                    )}
                   </Link>
                 </li>
               </ul>

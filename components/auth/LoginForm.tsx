@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { selectOrgState, setOrgState, setOrgName } from "@/store/orgSlice";
+import { selectUserData, setUserData, setIsAdmin } from "@/store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import supabase from "@/lib/supabase-browser";
 import Button from "@/components/ui/Button";
@@ -20,13 +21,21 @@ export default function LoginForm({ onForgotPw }: Props) {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  const orgState = useSelector(selectOrgState);
   const dispatch = useDispatch();
   const changeOrg = (orgId: number) => {
     dispatch(setOrgState(orgId));
   };
   const changeOrgName = (orgName: string) => {
     dispatch(setOrgName(orgName));
+  };
+
+  const initUserData = (data: any) => {
+    dispatch(setUserData(data));
+  };
+
+  const orgState = useSelector(selectOrgState);
+  const initIsAdmin = (isAdmin: boolean) => {
+    dispatch(setIsAdmin(isAdmin));
   };
 
   const submitHandler = async (event: React.SyntheticEvent) => {
@@ -39,13 +48,33 @@ export default function LoginForm({ onForgotPw }: Props) {
       });
       if (error) {
         throw Error(error.message);
-      } else if (data) {
+      } else if (data && data.user) {
+        console.log("logged in");
+        console.log(data);
+        const { data: userData } = await supabase
+          .from("users")
+          .select("*")
+          .eq("id", data.user.id);
+        if (userData && userData.length > 0) {
+          initUserData(userData[0]);
+        }
         const { data: orgData } = await supabase
           .from("organizations")
           .select("*");
         if (orgData && orgData.length > 0) {
           changeOrg(Number(data.user?.app_metadata.organizations[0]));
           changeOrgName(orgData[0].name);
+        }
+
+        const { data: userAdminOrgs, error } = await supabase.rpc(
+          "get_my_claim",
+          { claim: "admin_organizations" }
+        );
+        const currentOrg = orgState.toString();
+        if (userAdminOrgs && userAdminOrgs.includes(currentOrg)) {
+          initIsAdmin(true);
+        } else {
+          initIsAdmin(false);
         }
         router.replace("/platform");
       }
