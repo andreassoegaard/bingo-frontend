@@ -10,6 +10,8 @@ import autoTable from "jspdf-autotable";
 import { jsPDF } from "jspdf";
 import type { RowInput, CellInput, CellDef } from "jspdf-autotable";
 import Button from "@/components/ui/Button";
+import serverProps from "@/lib/server-props";
+import merge from "lodash.merge";
 
 export default function BankoPlatesSettingsPage() {
   const [plates, setPlates] = useState<any[]>([]);
@@ -187,3 +189,9 @@ export default function BankoPlatesSettingsPage() {
     </PageWrapper>
   );
 }
+
+export const getServerSideProps = async (ctx: any) => {
+  return merge(await serverProps(ctx), {
+    props: {},
+  });
+};

@@ -12,7 +12,7 @@ export default function TablePlaceholder(props: PropsWithChildren<Props>) {
           colSpan={props.headersLength}
           className='whitespace-nowrap py-4 text-sm text-gray-900 sm:pl-6 pl-4 pr-3'
         >
-          <span className='bi-placeholder h-4 w-full block'></span>
+          <span className='bi-placeholder bi-placeholder--large h-4 w-full block'></span>
         </td>
       </tr>
       <tr>
@@ -20,7 +20,7 @@ export default function TablePlaceholder(props: PropsWithChildren<Props>) {
           colSpan={props.headersLength}
           className='whitespace-nowrap py-4 text-sm text-gray-900 sm:pl-6 pl-4 pr-3'
         >
-          <span className='bi-placeholder h-4 w-full block'></span>
+          <span className='bi-placeholder bi-placeholder--large h-4 w-full block'></span>
         </td>
       </tr>
       <tr>
@@ -28,7 +28,7 @@ export default function TablePlaceholder(props: PropsWithChildren<Props>) {
           colSpan={props.headersLength}
           className='whitespace-nowrap py-4 text-sm text-gray-900 sm:pl-6 pl-4 pr-3'
         >
-          <span className='bi-placeholder h-4 w-full block'></span>
+          <span className='bi-placeholder bi-placeholder--large h-4 w-full block'></span>
         </td>
       </tr>
       <tr>
@@ -36,7 +36,7 @@ export default function TablePlaceholder(props: PropsWithChildren<Props>) {
           colSpan={props.headersLength}
           className='whitespace-nowrap py-4 text-sm text-gray-900 sm:pl-6 pl-4 pr-3'
         >
-          <span className='bi-placeholder h-4 w-full block'></span>
+          <span className='bi-placeholder bi-placeholder--large h-4 w-full block'></span>
         </td>
       </tr>
       <tr>
@@ -44,7 +44,7 @@ export default function TablePlaceholder(props: PropsWithChildren<Props>) {
           colSpan={props.headersLength}
           className='whitespace-nowrap py-4 text-sm text-gray-900 sm:pl-6 pl-4 pr-3'
         >
-          <span className='bi-placeholder h-4 w-full block'></span>
+          <span className='bi-placeholder bi-placeholder--large h-4 w-full block'></span>
         </td>
       </tr>
       <tr>
@@ -52,7 +52,7 @@ export default function TablePlaceholder(props: PropsWithChildren<Props>) {
           colSpan={props.headersLength}
           className='whitespace-nowrap py-4 text-sm text-gray-900 sm:pl-6 pl-4 pr-3'
         >
-          <span className='bi-placeholder h-4 w-full block'></span>
+          <span className='bi-placeholder bi-placeholder--large h-4 w-full block'></span>
         </td>
       </tr>
     </>

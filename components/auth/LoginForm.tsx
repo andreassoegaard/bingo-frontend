@@ -49,8 +49,6 @@ export default function LoginForm({ onForgotPw }: Props) {
       if (error) {
         throw Error(error.message);
       } else if (data && data.user) {
-        console.log("logged in");
-        console.log(data);
         const { data: userData } = await supabase
           .from("users")
           .select("*")
@@ -61,10 +59,6 @@ export default function LoginForm({ onForgotPw }: Props) {
         const { data: orgData } = await supabase
           .from("organizations")
           .select("*");
-        if (orgData && orgData.length > 0) {
-          changeOrg(Number(data.user?.app_metadata.organizations[0]));
-          changeOrgName(orgData[0].name);
-        }
 
         const { data: userAdminOrgs, error } = await supabase.rpc(
           "get_my_claim",
@@ -76,7 +70,12 @@ export default function LoginForm({ onForgotPw }: Props) {
         } else {
           initIsAdmin(false);
         }
-        router.replace("/platform");
+
+        if (orgData && orgData.length > 0) {
+          changeOrg(Number(data.user?.app_metadata.organizations[0]));
+          changeOrgName(orgData[0].name);
+          router.replace(`/platform/${orgData[0].slug}`);
+        }
       }
       setSubmitLoading(false);
     } catch (error: any) {

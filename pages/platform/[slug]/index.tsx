@@ -11,6 +11,7 @@ import { useIsAdmin } from "@/hooks/isAdmin";
 import PageTitle from "@/components/ui/PageTitle";
 import serverProps from "@/lib/server-props";
 import merge from "lodash.merge";
+import { Suspense } from "react";
 
 export default function Home(props: any) {
   const orgName = useSelector(selectOrgName);
@@ -41,8 +42,10 @@ export default function Home(props: any) {
     <>
       <PageWrapper title='Forside'>
         <PlatformWrapper>
-          <PageTitle>Forside</PageTitle>
-          <LogOutButton />
+          <Suspense fallback={<p>Loading</p>}>
+            <PageTitle>Forside</PageTitle>
+            <LogOutButton />
+          </Suspense>
         </PlatformWrapper>
       </PageWrapper>
     </>

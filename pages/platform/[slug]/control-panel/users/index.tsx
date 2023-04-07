@@ -1,6 +1,6 @@
 import PageWrapper from "@/components/wrappers/PageWrapper";
 import PlatformWrapper from "@/components/wrappers/PlatformWrapper";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import supabase from "@/lib/supabase-browser";
 import Table from "@/components/ui/Table";
 import { selectOrgState } from "@/store/orgSlice";
@@ -8,27 +8,15 @@ import { useSelector } from "react-redux";
 import Badge from "@/components/ui/Badge";
 import PageTitle from "@/components/ui/PageTitle";
 import InviteUserButton from "@/components/platform/control-panel/InviteUserButton";
+import serverProps from "@/lib/server-props";
+import merge from "lodash.merge";
 
 export default function GeneralSettingsPage() {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<any[]>([]);
   const orgState = useSelector(selectOrgState);
 
-  const fetchUsers = async () => {
-    setLoading(true);
-    const { data: usersResults } = await supabase.functions.invoke(
-      "get-org-users",
-      {
-        body: { organization: orgState },
-      }
-    );
-    if (usersResults) {
-      setUsers(usersResults.results);
-    }
-    setLoading(false);
-  };
-
-  const channel = supabase
+  supabase
     .channel("users")
     .on(
       "postgres_changes",
@@ -41,11 +29,8 @@ export default function GeneralSettingsPage() {
         const entryExistsAlready = users.filter(
           (item) => item.id === payload.new.id
         );
-        console.log(entryExistsAlready);
-        console.log(payload);
         if (entryExistsAlready.length === 0) {
           setUsers((oldArray) => [...oldArray, payload.new]);
-          console.log(users);
         }
       }
     )
@@ -53,48 +38,93 @@ export default function GeneralSettingsPage() {
 
   useEffect(() => {
     try {
+      const fetchUsers = async () => {
+        setLoading(true);
+        const { data: usersResults } = await supabase.functions.invoke(
+          "get-org-users",
+          {
+            body: { organization: orgState },
+          }
+        );
+        if (usersResults) {
+          setUsers(usersResults.results);
+        }
+        setLoading(false);
+      };
+
       fetchUsers();
     } catch (error) {
       setLoading(false);
       console.log(error);
     }
   }, [orgState]);
-  const tableHeaders = [
-    {
-      id: "name",
-      title: "Navn",
-      classes: "font-semibold",
-    },
-    {
-      id: "email",
-      title: "E-mail-adresse",
-    },
-    {
-      id: "role",
-      title: "Rolle",
-      customContent: (item: any) => {
-        if (item === "admin") {
-          return <Badge style='green'>Administrator</Badge>;
-        } else {
-          if (item && item.confirmed) {
-            return <Badge style='gray'>Bruger</Badge>;
-          } else {
-            return (
-              <>
-                <Badge style='gray' className='mr-1'>
-                  Alm. bruger
-                </Badge>
-                <Badge style='yellow'>Ikke bekræftet endnu</Badge>
-              </>
-            );
-          }
-        }
+
+  const tableHeaders = useMemo(() => {
+    return [
+      {
+        id: "name",
+        title: "Navn",
+        classes: "font-semibold",
       },
-    },
-  ];
-  const tableOptions = {
-    fullWidth: false,
-  };
+      {
+        id: "email",
+        title: "E-mail-adresse",
+      },
+      {
+        id: "role",
+        title: "Rolle",
+        customContent: (item: any) => {
+          if (item.role === "admin") {
+            return <Badge style='green'>Administrator</Badge>;
+          } else {
+            if (item && item.confirmed) {
+              return <Badge style='gray'>Alm. bruger</Badge>;
+            } else {
+              return (
+                <>
+                  <Badge style='gray' className='mr-1'>
+                    Alm. bruger
+                  </Badge>
+                  <Badge style='yellow'>Ikke bekræftet endnu</Badge>
+                </>
+              );
+            }
+          }
+        },
+      },
+      {
+        id: "delete",
+        title: "",
+        show: (item: any) => {
+          if (item.email === "andreassoegaard93@gmail.com") {
+            return false;
+          } else {
+            return true;
+          }
+        },
+      },
+    ];
+  }, []);
+
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const tableOptions = useMemo(() => {
+    return {
+      fullWidth: false,
+      deleteModal: {
+        title: "Slet bruger",
+        description:
+          "Er du sikker på du ønsker at slette denne bruger?<br />Det kan ikke fortrydes.",
+        loading: deleteLoading,
+        deleteClick: (item: any) => {
+          setDeleteLoading(true);
+          console.log(item);
+          setTimeout(() => {
+            setDeleteLoading(false);
+          }, 2000);
+        },
+      },
+    };
+  }, [deleteLoading]);
 
   return (
     <PageWrapper title='Brugere'>
@@ -115,3 +145,9 @@ export default function GeneralSettingsPage() {
     </PageWrapper>
   );
 }
+
+export const getServerSideProps = async (ctx: any) => {
+  return merge(await serverProps(ctx), {
+    props: {},
+  });
+};

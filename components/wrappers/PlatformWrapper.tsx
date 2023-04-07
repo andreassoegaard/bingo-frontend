@@ -76,6 +76,7 @@ export default function PlatformWrapper(props: PropsWithChildren<Props>) {
         current: router.asPath.includes(
           `/platform/${slug}/control-panel/users`
         ),
+        show: isAdmin,
       },
       {
         name: "Indstillinger",
@@ -86,7 +87,7 @@ export default function PlatformWrapper(props: PropsWithChildren<Props>) {
         icon: Cog6ToothIcon,
       },
     ];
-  }, [router.asPath, slug]);
+  }, [router.asPath, slug, isAdmin]);
 
   const navigation = useMemo(() => {
     return [
@@ -102,8 +103,13 @@ export default function PlatformWrapper(props: PropsWithChildren<Props>) {
         icon: ChartPieIcon,
         current: router.asPath === `/platform/${slug}/statistics`,
       },
+    ];
+  }, [router.asPath, slug]);
+
+  const gamesNavigation = useMemo(() => {
+    return [
       {
-        name: "Bankospil",
+        name: "Banko",
         href: `/platform/${slug}/play/banko`,
         icon: PlayCircleIcon,
         current: router.asPath.includes(`/platform/${slug}/play/banko`),
@@ -215,24 +221,60 @@ export default function PlatformWrapper(props: PropsWithChildren<Props>) {
                         </li>
                         <li>
                           <div className='text-xs font-semibold leading-6 text-indigo-200'>
-                            Kontrolpanel
+                            Spil
                           </div>
-                          <ul role='list' className='-mx-2 mt-2 space-y-1'>
-                            {controlPanelItems.map((team) => (
-                              <li key={team.name}>
+                          <ul role='list' className='-mx-2 space-y-1'>
+                            {gamesNavigation.map((item) => (
+                              <li key={item.name}>
                                 <Link
-                                  href={team.href}
+                                  href={item.href}
                                   className={classNames(
-                                    team.current
+                                    item.current
                                       ? "bg-indigo-700 text-white"
                                       : "text-indigo-200 hover:text-white hover:bg-indigo-700",
                                     "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                                   )}
                                 >
-                                  <span className='truncate'>{team.name}</span>
+                                  <item.icon
+                                    className={classNames(
+                                      item.current
+                                        ? "text-white"
+                                        : "text-indigo-200 group-hover:text-white",
+                                      "h-6 w-6 shrink-0"
+                                    )}
+                                    aria-hidden='true'
+                                  />
+                                  {item.name}
                                 </Link>
                               </li>
                             ))}
+                          </ul>
+                        </li>
+                        <li>
+                          <div className='text-xs font-semibold leading-6 text-indigo-200'>
+                            Kontrolpanel
+                          </div>
+                          <ul role='list' className='-mx-2 mt-2 space-y-1'>
+                            {controlPanelItems.map(
+                              (team) =>
+                                team.show && (
+                                  <li key={team.name}>
+                                    <Link
+                                      href={team.href}
+                                      className={classNames(
+                                        team.current
+                                          ? "bg-indigo-700 text-white"
+                                          : "text-indigo-200 hover:text-white hover:bg-indigo-700",
+                                        "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                                      )}
+                                    >
+                                      <span className='truncate'>
+                                        {team.name}
+                                      </span>
+                                    </Link>
+                                  </li>
+                                )
+                            )}
                           </ul>
                         </li>
                       </ul>
@@ -265,6 +307,37 @@ export default function PlatformWrapper(props: PropsWithChildren<Props>) {
                 <li>
                   <ul role='list' className='-mx-2 space-y-1'>
                     {navigation.map((item) => (
+                      <li key={item.name}>
+                        <Link
+                          href={item.href}
+                          className={classNames(
+                            item.current
+                              ? "bg-indigo-700 text-white"
+                              : "text-indigo-200 hover:text-white hover:bg-indigo-700",
+                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                          )}
+                        >
+                          <item.icon
+                            className={classNames(
+                              item.current
+                                ? "text-white"
+                                : "text-indigo-200 group-hover:text-white",
+                              "h-6 w-6 shrink-0"
+                            )}
+                            aria-hidden='true'
+                          />
+                          {item.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+                <li className='mt-4'>
+                  <div className='text-xs font-semibold leading-6 text-indigo-200'>
+                    Spil
+                  </div>
+                  <ul role='list' className='-mx-2 mt-2 space-y-1'>
+                    {gamesNavigation.map((item) => (
                       <li key={item.name}>
                         <Link
                           href={item.href}
@@ -328,14 +401,13 @@ export default function PlatformWrapper(props: PropsWithChildren<Props>) {
                       router.route.includes("/platform/user")
                         ? "bg-indigo-700"
                         : "",
-                      "flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-indigo-700"
+                      "flex flex-col gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-indigo-700"
                     )}
                   >
-                    <img
-                      className='h-8 w-8 rounded-full bg-indigo-700'
-                      src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-                      alt=''
-                    />
+                    <span className='text-xs font-semibold leading-6 text-indigo-200 block mb-1'>
+                      Logget ind som
+                    </span>
+                    {/* <span className='h-8 w-8 rounded-full bg-indigo-700' /> */}
                     <span className='sr-only'>Your profile</span>
                     {userData.name && (
                       <span aria-hidden='true'>{userData.name}</span>
