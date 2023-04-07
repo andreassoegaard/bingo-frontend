@@ -4,6 +4,8 @@ import supabase from "@/lib/supabase-browser";
 import Button from "@/components/ui/Button";
 import PageWrapper from "@/components/wrappers/PageWrapper";
 import Head from "next/head";
+import serverProps from "@/lib/server-props";
+import merge from "lodash.merge";
 
 export default function UpdatePassword() {
   const [showForm, setShowForm] = useState(false);
@@ -105,3 +107,9 @@ export default function UpdatePassword() {
     </>
   );
 }
+
+export const getServerSideProps = async (ctx: any) => {
+  return merge(await serverProps(ctx), {
+    props: {},
+  });
+};

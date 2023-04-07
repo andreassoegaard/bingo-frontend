@@ -1,3 +1,7 @@
 export function useSlug(url: string) {
-  return url.split("/platform")[1].split("/")[1];
+  if (url && url.includes("/platform")) {
+    return url.split("/platform")[1].split("/")[1];
+  } else {
+    return null;
+  }
 }

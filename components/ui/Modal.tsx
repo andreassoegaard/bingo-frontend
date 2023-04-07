@@ -6,7 +6,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 interface Props {
   open: boolean;
   onClose(event?: any): void;
-  size: string;
+  size: "md" | "lg" | "xl" | "2xl" | "3xl";
   title?: string;
   subtitle?: string;
 }

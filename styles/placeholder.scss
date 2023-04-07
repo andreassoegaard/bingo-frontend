@@ -1,5 +1,14 @@
 @keyframes placeHolderShimmer {
   0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+@keyframes placeHolderShimmerLarge {
+  0% {
     background-position: -1400px 0;
   }
   100% {
@@ -15,8 +24,13 @@
   animation-timing-function: linear;
   background: darkgray;
   background: linear-gradient(to right, #eeeeee 10%, #dddddd 18%, #eeeeee 33%);
-  background-size: 1400px 104px;
+  background-size: 400px 104px;
   position: relative;
   background-color: #eee;
   @apply rounded-full;
+
+  &--large {
+    background-size: 1400px 104px;
+    animation-name: placeHolderShimmerLarge;
+  }
 }
