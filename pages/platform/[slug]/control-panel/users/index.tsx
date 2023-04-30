@@ -3,18 +3,16 @@ import PlatformWrapper from "@/components/wrappers/PlatformWrapper";
 import { useState, useEffect, useMemo } from "react";
 import supabase from "@/lib/supabase-browser";
 import Table from "@/components/ui/Table";
-import { selectOrgState } from "@/store/orgSlice";
-import { useSelector } from "react-redux";
 import Badge from "@/components/ui/Badge";
 import PageTitle from "@/components/ui/PageTitle";
 import InviteUserButton from "@/components/platform/control-panel/InviteUserButton";
 import serverProps from "@/lib/server-props";
 import merge from "lodash.merge";
+import { useOrgId } from "@/hooks/useOrgId";
 
 export default function GeneralSettingsPage() {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<any[]>([]);
-  const orgState = useSelector(selectOrgState);
 
   supabase
     .channel("users")
@@ -36,6 +34,7 @@ export default function GeneralSettingsPage() {
     )
     .subscribe();
 
+  const orgId = useOrgId();
   useEffect(() => {
     try {
       const fetchUsers = async () => {
@@ -43,7 +42,7 @@ export default function GeneralSettingsPage() {
         const { data: usersResults } = await supabase.functions.invoke(
           "get-org-users",
           {
-            body: { organization: orgState },
+            body: { organization: orgId },
           }
         );
         if (usersResults) {
@@ -57,7 +56,7 @@ export default function GeneralSettingsPage() {
       setLoading(false);
       console.log(error);
     }
-  }, [orgState]);
+  }, [orgId]);
 
   const tableHeaders = useMemo(() => {
     return [

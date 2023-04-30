@@ -17,6 +17,7 @@ interface Options {
   fullWidth?: boolean;
   deleteModal?: DeleteModalOptions;
   editIdFetch?: number;
+  editText?: string;
   rowClick?(event?: any): void;
 }
 
@@ -68,6 +69,13 @@ export default function Table(props: Props) {
       return null;
     }
   }, [props.headers]);
+
+  const deleteItem = () => {
+    if (options.deleteModal?.deleteClick) {
+      options.deleteModal?.deleteClick(tempDeleteItem);
+    }
+    setShowDeleteModal(false);
+  };
 
   return (
     <>
@@ -136,17 +144,19 @@ export default function Table(props: Props) {
                         {(hasDelete || hasEdit) && (
                           <td className='whitespace-nowrap py-4 pr-4 pl-3 text-sm text-balack text-right font-medium'>
                             <div className='flex items-center justify-end'>
-                              {hasDelete && deleteHeader.show(dataItem) && (
-                                <div
-                                  onClick={() => toggleDeleteModal(dataItem)}
-                                  className={classNames(
-                                    "cursor-pointer text-red-600",
-                                    hasEdit ? "mr-4" : ""
-                                  )}
-                                >
-                                  Slet
-                                </div>
-                              )}
+                              {hasDelete &&
+                                deleteHeader.show &&
+                                deleteHeader.show(dataItem) && (
+                                  <div
+                                    onClick={() => toggleDeleteModal(dataItem)}
+                                    className={classNames(
+                                      "cursor-pointer text-red-600 hover:text-red-900",
+                                      hasEdit ? "mr-4" : ""
+                                    )}
+                                  >
+                                    Slet
+                                  </div>
+                                )}
                               {hasEdit &&
                                 (options.editIdFetch === dataItem.id ? (
                                   <LoadingSpinner />
@@ -157,9 +167,11 @@ export default function Table(props: Props) {
                                         ? options.rowClick(dataItem)
                                         : null
                                     }
-                                    className='cursor-pointer'
+                                    className='cursor-pointer text-indigo-600 hover:text-indigo-900'
                                   >
-                                    Rediger
+                                    {options.editText
+                                      ? options.editText
+                                      : "Rediger"}
                                   </div>
                                 ))}
                             </div>
@@ -231,11 +243,7 @@ export default function Table(props: Props) {
           <Button
             style='red'
             loading={options.deleteModal?.loading}
-            onClick={() =>
-              options.deleteModal?.deleteClick
-                ? options.deleteModal?.deleteClick(tempDeleteItem)
-                : null
-            }
+            onClick={deleteItem}
           >
             Slet
           </Button>
