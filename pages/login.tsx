@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import Head from "next/head";
 import LoginForm from "@/components/auth/LoginForm";
 import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
 import PageWrapper from "@/components/wrappers/PageWrapper";
+import { GetServerSidePropsContext } from "next";
 
 export default function Login() {
   const [forgotPw, setForgotPw] = useState(false);
@@ -39,7 +39,7 @@ export default function Login() {
   );
 }
 
-export const getServerSideProps = async (ctx: any) => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   // Create authenticated Supabase Client
   const supabase = createServerSupabaseClient(ctx);
   // Check if we have a session

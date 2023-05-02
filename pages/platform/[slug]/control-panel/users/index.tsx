@@ -1,3 +1,5 @@
+import { GetServerSidePropsContext } from "next";
+
 import PageWrapper from "@/components/wrappers/PageWrapper";
 import PlatformWrapper from "@/components/wrappers/PlatformWrapper";
 import { useState, useEffect, useMemo } from "react";
@@ -145,7 +147,7 @@ export default function GeneralSettingsPage() {
   );
 }
 
-export const getServerSideProps = async (ctx: any) => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   return merge(await serverProps(ctx), {
     props: {},
   });

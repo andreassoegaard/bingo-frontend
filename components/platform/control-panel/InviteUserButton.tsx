@@ -15,7 +15,7 @@ export default function InviteUserButton(props: PropsWithChildren) {
   const [success, setSuccess] = useState("");
   const orgState = useSelector(selectOrgState);
 
-  const handleSubmit = async (event: React.SyntheticEvent) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
     event.preventDefault();
     try {

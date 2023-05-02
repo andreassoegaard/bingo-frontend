@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 export default function LogOutButton() {
   const router = useRouter();
-  const clickHandler = async (event: any) => {
+  const clickHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const { error } = await supabase.auth.signOut();
     console.log(error);

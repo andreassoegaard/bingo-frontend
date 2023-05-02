@@ -10,7 +10,7 @@ interface Props {
   className?: string;
   error?: string;
   success?: string;
-  onClick?(event: any): void;
+  onClick?(event: React.MouseEvent<HTMLButtonElement>): void;
 }
 
 export default function Button(props: PropsWithChildren<Props>) {

@@ -6,7 +6,7 @@ interface Props {
   name: string;
   required: boolean;
   placeholder: string;
-  value: any;
+  value: string;
   onChange?(event: React.ChangeEvent<HTMLInputElement>): void;
 }
 

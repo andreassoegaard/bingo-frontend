@@ -10,7 +10,7 @@ export default function OnboardingFlow() {
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
 
-  const submitHandler = async (event: React.SyntheticEvent) => {
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       const { data, error } = await supabase
