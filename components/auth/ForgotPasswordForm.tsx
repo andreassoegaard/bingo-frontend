@@ -5,7 +5,7 @@ import InputWrapper from "@/components/ui/InputWrapper";
 import InputField from "@/components/ui/InputField";
 
 interface Props {
-  onBackToLogin?(event?: any): void;
+  onBackToLogin?: () => void;
 }
 
 export default function ForgotPasswordForm({ onBackToLogin }: Props) {
@@ -14,7 +14,7 @@ export default function ForgotPasswordForm({ onBackToLogin }: Props) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const submitHandler = async (event: any) => {
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
     try {

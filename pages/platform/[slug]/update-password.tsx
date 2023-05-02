@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
+import { GetServerSidePropsContext } from "next";
+
 import supabase from "@/lib/supabase-browser";
 import Button from "@/components/ui/Button";
 import PageWrapper from "@/components/wrappers/PageWrapper";
-import Head from "next/head";
 import serverProps from "@/lib/server-props";
 import merge from "lodash.merge";
 
@@ -15,7 +16,7 @@ export default function UpdatePassword() {
   const router = useRouter();
 
   const [submitLoading, setSubmitLoading] = useState(false);
-  const submitHandler = async (event: any) => {
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       setSubmitLoading(true);
@@ -108,7 +109,7 @@ export default function UpdatePassword() {
   );
 }
 
-export const getServerSideProps = async (ctx: any) => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   return merge(await serverProps(ctx), {
     props: {},
   });

@@ -1,14 +1,16 @@
+import { GetServerSidePropsContext } from "next";
+import { useState, useEffect } from "react";
+import { jsPDF } from "jspdf";
+import type { CellDef } from "jspdf-autotable";
+
 import PageWrapper from "@/components/wrappers/PageWrapper";
 import PlatformWrapper from "@/components/wrappers/PlatformWrapper";
 import PageTitle from "@/components/ui/PageTitle";
 import SettingsWrapper from "@/components/wrappers/SettingsWrapper";
 import Box from "@/components/ui/Box";
-import { useState, useEffect } from "react";
 import supabase from "@/lib/supabase-browser";
 import groupBy from "lodash.groupby";
 import autoTable from "jspdf-autotable";
-import { jsPDF } from "jspdf";
-import type { RowInput, CellInput, CellDef } from "jspdf-autotable";
 import Button from "@/components/ui/Button";
 import serverProps from "@/lib/server-props";
 import merge from "lodash.merge";
@@ -190,7 +192,7 @@ export default function BankoPlatesSettingsPage() {
   );
 }
 
-export const getServerSideProps = async (ctx: any) => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   return merge(await serverProps(ctx), {
     props: {},
   });

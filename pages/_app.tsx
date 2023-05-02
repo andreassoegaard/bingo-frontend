@@ -20,14 +20,14 @@ export default function App({ Component, pageProps, ...rest }: AppProps) {
   const [loading, setLoading] = useState(false);
   const [loaderSize, setLoaderSize] = useState("full");
   useEffect(() => {
-    const start = (event: any) => {
+    const start = (url: string) => {
       console.log("start");
-      if (!router.asPath.includes("/settings") && event.includes("/settings")) {
+      if (!router.asPath.includes("/settings") && url.includes("/settings")) {
         setLoaderSize("large");
       } else {
         setLoaderSize("full");
       }
-      if (event.includes("/settings")) {
+      if (url.includes("/settings")) {
         if (!router.asPath.includes("/settings")) {
           setLoading(true);
         } else {

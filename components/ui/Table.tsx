@@ -10,7 +10,7 @@ interface DeleteModalOptions {
   title?: string;
   description?: string;
   loading?: boolean;
-  deleteClick?(event?: any): void;
+  deleteClick?: (item?: any) => void;
 }
 
 interface Options {
@@ -18,11 +18,19 @@ interface Options {
   deleteModal?: DeleteModalOptions;
   editIdFetch?: number;
   editText?: string;
-  rowClick?(event?: any): void;
+  rowClick?(item?: any): void;
+}
+
+interface Headers {
+  id: string;
+  title?: string;
+  classes?: string;
+  customContent?: (item: any) => void;
+  show?: (item: any) => boolean;
 }
 
 interface Props {
-  headers: any;
+  headers: Headers[];
   data: any;
   loading: boolean;
   options?: Options;
@@ -39,14 +47,12 @@ export default function Table(props: Props) {
     setShowDeleteModal(true);
   };
 
-  const classNames = (...classes: any[]) => {
+  const classNames = (...classes: string[]) => {
     return classes.filter(Boolean).join(" ");
   };
 
   const hasDelete = useMemo(() => {
-    if (
-      props.headers.filter((item: any) => item.id === "delete").length === 1
-    ) {
+    if (props.headers.filter((item) => item.id === "delete").length === 1) {
       return true;
     } else {
       return false;
@@ -54,7 +60,7 @@ export default function Table(props: Props) {
   }, [props.headers]);
 
   const hasEdit = useMemo(() => {
-    if (props.headers.filter((item: any) => item.id === "edit").length === 1) {
+    if (props.headers.filter((item) => item.id === "edit").length === 1) {
       return true;
     } else {
       return false;
@@ -62,7 +68,7 @@ export default function Table(props: Props) {
   }, [props.headers]);
 
   const deleteHeader = useMemo(() => {
-    const header = props.headers.filter((item: any) => item.id === "delete");
+    const header = props.headers.filter((item) => item.id === "delete");
     if (header) {
       return header[0];
     } else {
@@ -96,7 +102,7 @@ export default function Table(props: Props) {
               <table className='min-w-full divide-y divide-gray-300'>
                 <thead className='bg-gray-50'>
                   <tr>
-                    {props.headers.map((header: any, index: any) => (
+                    {props.headers.map((header, index: number) => (
                       <th
                         key={index}
                         scope='col'
@@ -114,10 +120,10 @@ export default function Table(props: Props) {
                   </tr>
                 </thead>
                 <tbody className='divide-y divide-gray-200 bg-white'>
-                  {props.data.map((dataItem: any, index: any) => {
+                  {props.data.map((dataItem: any, index: number) => {
                     return (
                       <tr key={`trItem-${index}`}>
-                        {props.headers.map((header: any, headerIndex: any) => {
+                        {props.headers.map((header, headerIndex: any) => {
                           return (
                             <td
                               key={`tdItem-${headerIndex}`}
@@ -126,7 +132,7 @@ export default function Table(props: Props) {
                                   ? "sm:pl-6 pl-4 pr-3"
                                   : "px-3",
                                 "whitespace-nowrap py-4 text-sm text-gray-900",
-                                header.classes
+                                header.classes ? header.classes : ""
                               )}
                             >
                               {(() => {
@@ -145,6 +151,7 @@ export default function Table(props: Props) {
                           <td className='whitespace-nowrap py-4 pr-4 pl-3 text-sm text-balack text-right font-medium'>
                             <div className='flex items-center justify-end'>
                               {hasDelete &&
+                                deleteHeader &&
                                 deleteHeader.show &&
                                 deleteHeader.show(dataItem) && (
                                   <div

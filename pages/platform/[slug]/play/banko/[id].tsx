@@ -1,3 +1,5 @@
+import { GetServerSidePropsContext } from "next";
+
 import PageWrapper from "@/components/wrappers/PageWrapper";
 import PlatformWrapper from "@/components/wrappers/PlatformWrapper";
 import PageTitle from "@/components/ui/PageTitle";
@@ -39,12 +41,12 @@ export default function BankoGroupPage(props: Props) {
   );
 }
 
-export const getServerSideProps = async (ctx: any) => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const supabase = createServerSupabaseClient(ctx);
   let { data: banko_games_groups, error } = await supabase
     .from("banko_games_groups")
     .select("*")
-    .eq("id", Number(ctx.params.id));
+    .eq("id", Number(ctx.params?.id));
 
   if (
     error ||

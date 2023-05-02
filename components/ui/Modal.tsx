@@ -5,10 +5,10 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 
 interface Props {
   open: boolean;
-  onClose(event?: any): void;
   size: "md" | "lg" | "xl" | "2xl" | "3xl";
   title?: string;
   subtitle?: string;
+  onClose: () => void;
 }
 
 export default function Modal(props: PropsWithChildren<Props>) {
@@ -75,7 +75,7 @@ export default function Modal(props: PropsWithChildren<Props>) {
                   <button
                     type='button'
                     className='rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
-                    onClick={() => props.onClose()}
+                    onClick={props.onClose}
                   >
                     <span className='sr-only'>Close</span>
                     <XMarkIcon className='h-6 w-6' aria-hidden='true' />

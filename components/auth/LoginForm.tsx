@@ -11,7 +11,7 @@ import Modal from "@/components/ui/Modal";
 import OnboardingFlow from "@/components/onboarding/OnboardingFlow";
 
 interface Props {
-  onForgotPw(event: any): void;
+  onForgotPw(): void;
 }
 
 export default function LoginForm({ onForgotPw }: Props) {
@@ -38,7 +38,7 @@ export default function LoginForm({ onForgotPw }: Props) {
     dispatch(setIsAdmin(isAdmin));
   };
 
-  const submitHandler = async (event: React.SyntheticEvent) => {
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     setSubmitLoading(true);
     event.preventDefault();
     try {

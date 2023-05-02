@@ -41,7 +41,7 @@ export default function CreateBankoGroupButton(
     setName(name);
   }, [props.currentGroups]);
 
-  const handleSubmit = async (event: React.SyntheticEvent) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setError("");
     setLoading(true);
     event.preventDefault();
