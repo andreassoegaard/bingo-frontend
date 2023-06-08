@@ -38,9 +38,6 @@ export default function LoginForm({ onForgotPw }: Props) {
     dispatch(setIsAdmin(isAdmin));
   };
 
-  // Dette er en test kommentar
-  // Dette er endnu en test kommentar
-
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     setSubmitLoading(true);
     event.preventDefault();
