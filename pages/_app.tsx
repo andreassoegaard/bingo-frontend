@@ -51,11 +51,11 @@ export default function App({ Component, pageProps, ...rest }: AppProps) {
     };
   }, [router.asPath, router.events]);
   return (
-    <SessionContextProvider
-      supabaseClient={supabaseClient}
-      initialSession={pageProps.initialSession}
-    >
-      <Provider store={store}>
+    <Provider store={store}>
+      <SessionContextProvider
+        supabaseClient={supabaseClient}
+        initialSession={pageProps.initialSession}
+      >
         <PersistGate persistor={store.__persistor} loading={<div>Loading</div>}>
           {loading ? (
             <PageLoading size={loaderSize} />
@@ -63,7 +63,7 @@ export default function App({ Component, pageProps, ...rest }: AppProps) {
             <Component {...pageProps} />
           )}
         </PersistGate>
-      </Provider>
-    </SessionContextProvider>
+      </SessionContextProvider>
+    </Provider>
   );
 }
