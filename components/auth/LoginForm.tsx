@@ -39,6 +39,7 @@ export default function LoginForm({ onForgotPw }: Props) {
   };
 
   // Dette er en test kommentar
+  // Dette er endnu en test kommentar
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     setSubmitLoading(true);
