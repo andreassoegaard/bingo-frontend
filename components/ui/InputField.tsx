@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 
-interface Props {
+type Props = {
   type: string;
   id: string;
   name: string;
@@ -8,7 +8,7 @@ interface Props {
   placeholder: string;
   value: string;
   onChange?(event: React.ChangeEvent<HTMLInputElement>): void;
-}
+};
 
 export default function InputField(props: PropsWithChildren<Props>) {
   return (
