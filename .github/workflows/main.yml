@@ -48,3 +48,21 @@ jobs:
             echo "Build failed! Please fix the build errors before merging."
             exit 1
           fi
+
+      - name: Report status check
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { context } = require('@actions/github');
+
+            const status = context.payload.workflow_run.conclusion === 'success' ? 'success' : 'failure';
+            const octokit = context.github;
+            octokit.repos.createCommitStatus({
+              ...context.repo,
+              sha: context.payload.workflow_run.head_commit.id,
+              state: status,
+              target_url: 'https://example.com/build-details',
+              description: 'Build and test status',
+              context: 'build-and-test'
+            });
