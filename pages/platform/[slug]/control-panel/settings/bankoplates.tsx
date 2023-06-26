@@ -144,6 +144,7 @@ export default function BankoPlatesSettingsPage() {
         }
       });
     });
+    // @ts-ignore
     const pageCount = doc.internal.getNumberOfPages();
     for (let i = 0; i < pageCount; i++) {
       doc.setPage(i);
