@@ -16,7 +16,7 @@ jobs:
         run: |
           branch_name=${GITHUB_REF#refs/heads/}
           IFS="/" read -ra branch_parts <<< "$branch_name"
-          if [[ ${#branch_parts[@]} -ge 2 && ${branch_parts[1]} =~ ^T\d+-\d+$ ]]; then
+          if [[ ${#branch_parts[@]} -ge 2 && ${branch_parts[1]} =~ ^T\d{3}-\d{4}$ ]]; then
             task_id=${branch_parts[1]}
           else
             task_id=""
