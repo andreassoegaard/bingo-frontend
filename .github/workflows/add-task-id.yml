@@ -14,7 +14,7 @@ jobs:
       - name: Extract task ID
         id: extract-task-id
         run: |
-          branch_name=$(git symbolic-ref --short HEAD)
+          branch_name=${GITHUB_REF#refs/heads/}
           IFS="/" read -ra branch_parts <<< "$branch_name"
           if [[ ${#branch_parts[@]} -ge 2 && ${branch_parts[1]} =~ ^T\d+-\d+$ ]]; then
             task_id=${branch_parts[1]}
