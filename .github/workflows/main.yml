@@ -8,10 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      NEXT_PUBLIC_SUPABASE_URL: "https://eenvlywmoqrtxjqkjgfp.supabase.co"
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVlbnZseXdtb3FydHhqcWtqZ2ZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk2OTQyMjEsImV4cCI6MTk5NTI3MDIyMX0.w5pZqwK08xNB23Xd6iGJ1YvGAh4BAYzEXNKojyrsxfI"
-      SUPABASE_JWT_SECRET: "fgv1x07XZ1d22I6Zu2fMIFoD7JigC1W4SOq51Gn/zwWVxASUU+KRrXbwYPtgD/zpRYVmHqi1sMj5EuYLpnPnFQ=="
+    permissions: write-all
 
     steps:
       - name: Checkout code
