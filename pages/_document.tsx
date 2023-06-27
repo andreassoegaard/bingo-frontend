@@ -16,6 +16,7 @@ export default function Document() {
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   // Create authenticated Supabase Client
+  // test comment
   const supabase = createServerSupabaseClient(ctx);
   // Check if we have a session
   const {
